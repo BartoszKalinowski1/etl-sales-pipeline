@@ -1,26 +1,57 @@
 import pandas as pd
+import numpy as np
 
 
 def transform_data(df):
+    df = delete_duplicated_records(df)
+    df = delete_null_customer_records(df)
+    if df["price"].dtype != float:
+        print("\nPrice column is not in float format. Converting ...")
+        df["price"] = df["price"].astype(float)
+    df = delete_negative_price_records(df)
+    df = delete_negative_quantity_records(df)
+    df = create_revenue_column(df)
+    df = segment_customers_by_revenue(df)
+    return df
+
+
+def delete_duplicated_records(df):
     if df.duplicated().sum() > 0:
         print(f"\nFound {df.duplicated().sum()} duplicated records."
               " Deleting ...")
-    df = df.drop_duplicates()
+    return df.drop_duplicates()
+
+
+def delete_null_customer_records(df):
     if df["customer"].isna().sum() > 0:
         print(f"\nFound {df['customer'].isna().sum()} records with null "
               "customer. Deleting ...")
-    df = df[~df["customer"].isna()]
-    if df["price"].dtype != float:
-        print("\nPrice column is not in float format. Converting ...")
-    df["price"] = df["price"].astype(float)
+    return df[~df["customer"].isna()]
+
+
+def delete_negative_price_records(df):
     negative_prices = df["price"] < 0
     if negative_prices.sum() > 0:
         print(f"\nFound {negative_prices.sum()} negative price record. "
               "Deleting ...")
-        df = df[df["price"] > 0]
-    if df["quantity"].dtype != int:
-        print("\nQuantity column is not in integer format. Converting ...")
-    df["quantity"] = df["quantity"].astype(int)
+    return df[df["price"] > 0]
+
+
+def delete_negative_quantity_records(df):
+    negative_quantities = df["quantity"] < 0
+    if negative_quantities.sum() > 0:
+        print(f"\nFound {negative_quantities.sum()} negative quantity record. "
+              "Deleting ...")
+    return df[df["quantity"] > 0]
+
+
+def create_revenue_column(df):
     print("\nCreating revenue column ...")
     df["revenue"] = df["price"] * df["quantity"]
+    return df
+
+
+def segment_customers_by_revenue(df):
+    print("\nSegmenting orders ...")
+    df["category"] = np.where(df["revenue"] > 100, "High", "Low")
     return df

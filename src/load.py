@@ -1,11 +1,15 @@
-import pandas as pd
 import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def load_data(df, path):
-    if not os.path.exists(path):
-        print(f"\nPath {path} does not exist. Creating ...")
-        os.makedirs(path)
+    os.makedirs(path, exist_ok=True)
     output_path = os.path.join(path, "cleaned_sales.csv")
-    df.to_csv(output_path, index=False)
-    print(f"\nData loaded to {output_path}")
+    try:
+        df.to_csv(output_path, index=False)
+        logger.info(f"Data loaded to: {output_path}")
+    except Exception:
+        logger.exception("Failed to load data")
+        raise

@@ -26,8 +26,8 @@ logger.info("Starting extraction step")
 try:
     raw_df = extract_data(data_path)
     logger.info(f"Raw data extracted. Shape: {raw_df.shape}")
-except Exception as e:
-    logger.error(f"Extraction failed: {e}")
+except Exception:
+    logger.exception("Extraction failed")
     raise
 
 logger.info("Extraction completed")
@@ -37,8 +37,8 @@ logger.info("Starting transformation step")
 try:
     cleaned_df = transform_data(raw_df)
     logger.info(f"Transform completed. Shape: {cleaned_df.shape}")
-except Exception as e:
-    logger.error(f"Transformation failed: {e}")
+except Exception:
+    logger.exception("Transformation failed")
     raise
 
 processed_dir = "data/processed/"
@@ -50,10 +50,11 @@ if check_quality(cleaned_df):
     try:
         load_data(cleaned_df, processed_dir)
         logger.info("Loading completed")
-        logger.info(f"ETL pipeline finished successfully. Final shape of "
-                    f"cleaned data: {cleaned_df.shape}")
-    except Exception as e:
-        logger.error(f"Loading failed: {e}")
+        logger.info(f"ETL pipeline finished successfully. "
+                    f"Rows={len(cleaned_df)} | columns={cleaned_df.shape[1]} | "
+                    f"Data loss={len(raw_df)} - {len(cleaned_df)}")
+    except Exception:
+        logger.exception("Loading failed")
         raise
 else:
     logger.error("Pipeline finished with error - quality checks "

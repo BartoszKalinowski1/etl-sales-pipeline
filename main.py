@@ -52,7 +52,7 @@ if check_quality(cleaned_df):
         logger.info("Loading completed")
         logger.info(f"ETL pipeline finished successfully. "
                     f"Rows={len(cleaned_df)} | columns={cleaned_df.shape[1]} | "
-                    f"Data loss={len(raw_df)} - {len(cleaned_df)}")
+                    f"Data loss={len(raw_df) - len(cleaned_df)}")
     except Exception:
         logger.exception("Loading failed")
         raise

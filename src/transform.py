@@ -1,12 +1,14 @@
-import pandas as pd
 import numpy as np
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def transform_data(df):
     df = delete_duplicated_records(df)
     df = delete_null_customer_records(df)
     if df["price"].dtype != float:
-        print("\nPrice column is not in float format. Converting ...")
+        logger.info("Price column is not in float format. Converting ...")
         df["price"] = df["price"].astype(float)
     df = delete_negative_price_records(df)
     df = delete_negative_quantity_records(df)
@@ -17,41 +19,41 @@ def transform_data(df):
 
 def delete_duplicated_records(df):
     if df.duplicated().sum() > 0:
-        print(f"\nFound {df.duplicated().sum()} duplicated records."
-              " Deleting ...")
+        logger.info(f"Found {df.duplicated().sum()} duplicated records."
+                    " Deleting ...")
     return df.drop_duplicates()
 
 
 def delete_null_customer_records(df):
     if df["customer"].isna().sum() > 0:
-        print(f"\nFound {df['customer'].isna().sum()} records with null "
-              "customer. Deleting ...")
+        logger.info(f"Found {df['customer'].isna().sum()} records with null "
+                    "customer. Deleting ...")
     return df[~df["customer"].isna()]
 
 
 def delete_negative_price_records(df):
     negative_prices = df["price"] < 0
     if negative_prices.sum() > 0:
-        print(f"\nFound {negative_prices.sum()} negative price record. "
-              "Deleting ...")
+        logger.info(f"Found {negative_prices.sum()} negative price record. "
+                    "Deleting ...")
     return df[df["price"] > 0]
 
 
 def delete_negative_quantity_records(df):
     negative_quantities = df["quantity"] < 0
     if negative_quantities.sum() > 0:
-        print(f"\nFound {negative_quantities.sum()} negative quantity record. "
-              "Deleting ...")
+        logger.info(f"Found {negative_quantities.sum()} negative quantity record. "
+                    "Deleting ...")
     return df[df["quantity"] > 0]
 
 
 def create_revenue_column(df):
-    print("\nCreating revenue column ...")
+    logger.info("Creating revenue column ...")
     df["revenue"] = df["price"] * df["quantity"]
     return df
 
 
 def segment_customers_by_revenue(df):
-    print("\nSegmenting orders ...")
+    logger.info("Segmenting orders ...")
     df["category"] = np.where(df["revenue"] > 100, "High", "Low")
     return df

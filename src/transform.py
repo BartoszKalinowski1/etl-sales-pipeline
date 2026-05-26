@@ -1,5 +1,6 @@
 import numpy as np
 import logging
+from config import REVENUE_THRESHOLD
 
 logger = logging.getLogger(__name__)
 
@@ -55,5 +56,5 @@ def create_revenue_column(df):
 
 def segment_customers_by_revenue(df):
     logger.info("Segmenting orders ...")
-    df["category"] = np.where(df["revenue"] > 100, "High", "Low")
+    df["category"] = np.where(df["revenue"] > REVENUE_THRESHOLD, "High", "Low")
     return df

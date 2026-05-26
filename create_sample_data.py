@@ -1,7 +1,8 @@
 import pandas as pd
 import os
+from config import DATA_PATH
 
-os.makedirs('data/raw', exist_ok=True)
+os.makedirs(os.path.dirname(DATA_PATH), exist_ok=True)
 data = {
     "order_id": [1, 2, 3, 3, 4, 5, 6],
     "customer": ["Ania", "Tomek", "Kasia", "Kasia", "Marek", "Ola", None],
@@ -9,6 +10,6 @@ data = {
     "quantity": [1, 3, 2, 2, 1, 1, 2]
 }
 df = pd.DataFrame(data)
-df.to_csv("data/raw/sales.csv", index=False)
+df.to_csv(DATA_PATH, index=False)
 print("Sample data (with null values and duplicates) created at "
-      "'data/raw/sales.csv'")
+      f"'{DATA_PATH}'")

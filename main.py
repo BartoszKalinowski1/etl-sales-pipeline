@@ -4,13 +4,14 @@ from src.quality_checks import check_quality
 from src.load import load_data
 import logging
 import os
+from config import DATA_PATH, PROCESSED_DIR, LOG_PATH
 
-os.makedirs("logs", exist_ok=True)
+os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
     handlers=[
-        logging.FileHandler("logs/pipeline.log"),
+        logging.FileHandler(LOG_PATH),
         logging.StreamHandler()
     ]
 )
@@ -19,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 logger.info("ETL pipeline started")
 
-data_path = "data/raw/sales.csv"
+data_path = DATA_PATH
 
 logger.info("Starting extraction step")
 
@@ -41,7 +42,7 @@ except Exception:
     logger.exception("Transformation failed")
     raise
 
-processed_dir = "data/processed/"
+processed_dir = PROCESSED_DIR
 
 logger.info("Running data quality checks")
 

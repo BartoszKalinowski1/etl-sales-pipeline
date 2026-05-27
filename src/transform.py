@@ -8,9 +8,8 @@ logger = logging.getLogger(__name__)
 def transform_data(df):
     df = delete_duplicated_records(df)
     df = delete_null_customer_records(df)
-    if df["price"].dtype != float:
-        logger.info("Price column is not in float format. Converting ...")
-        df["price"] = df["price"].astype(float)
+    df["price"] = df["price"].astype(float)
+    df["quantity"] = df["quantity"].astype(float)
     df = delete_negative_price_records(df)
     df = delete_negative_quantity_records(df)
     df = create_revenue_column(df)

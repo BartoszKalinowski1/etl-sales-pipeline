@@ -1,6 +1,6 @@
 import pandas as pd
 from src.quality_checks import count_null, check_df_length, check_price_values, \
-    check_revenue_values, check_duplicates, check_revenue_column
+    check_revenue_values, check_duplicates, check_revenue_column, check_quality
 
 
 def test_count_null_returns_true_when_no_nulls():
@@ -105,3 +105,25 @@ def test_check_revenue_column_returns_false_when_revenue_not_in_columns():
         "quantity": [1, 3, 2, 2, 1, 1, 2]
     })
     assert check_revenue_column(df) is False
+
+
+def test_check_quality_end_to_end_false_case():
+    df = pd.DataFrame({
+        "order_id": [1, 2, 3, 3, 4, 5, 6],
+        "customer": ["Ania", "Tomek", "Kasia", "Kasia", "Marek", "Ola", None],
+        "price": [100.50, 20.00, 50.00, 50.00, -10.00, 300.00, 50.0],
+        "quantity": [1, 3, 2, 2, 1, 1, 2],
+        "revenue": [100.50, 60.00, 100.00, 100.00, -10.00, 300.00, 100.0]
+    })
+    assert check_quality(df) is False
+
+
+def test_check_quality_end_to_end_true_case():
+    df = pd.DataFrame({
+        "order_id": [1, 2, 3, 4, 5, 6],
+        "customer": ["Ania", "Tomek", "Kasia", "Marek", "Ola", "Piotr"],
+        "price": [100.50, 20.00, 50.00, 10.00, 300.00, 50.0],
+        "quantity": [1, 3, 2, 1, 1, 2],
+        "revenue": [100.50, 60.00, 100.00, 10.00, 300.00, 100.0]
+    })
+    assert check_quality(df) is True

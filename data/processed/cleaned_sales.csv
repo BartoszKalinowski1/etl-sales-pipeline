@@ -1,5 +1,5 @@
 order_id,customer,price,quantity,revenue,category
-1,Ania,100.5,1,100.5,High
-2,Tomek,20.0,3,60.0,Low
-3,Kasia,50.0,2,100.0,Low
-5,Ola,300.0,1,300.0,High
+1,Ania,100.5,1.0,100.5,High
+2,Tomek,20.0,3.0,60.0,Low
+3,Kasia,50.0,2.0,100.0,Low
+5,Ola,300.0,1.0,300.0,High

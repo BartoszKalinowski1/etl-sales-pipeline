@@ -5,6 +5,7 @@ from src.load import load_data
 import logging
 import os
 from config import DATA_PATH, PROCESSED_DIR, LOG_PATH
+from create_sample_data import generate_sample_data
 
 os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
 logging.basicConfig(
@@ -19,6 +20,9 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 logger.info("ETL pipeline started")
+
+logger.info("Generating sample data")
+generate_sample_data()
 
 data_path = DATA_PATH
 

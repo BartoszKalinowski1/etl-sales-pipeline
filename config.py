@@ -5,3 +5,4 @@ OUTPUT_FILE = "cleaned_sales.csv"
 
 
 REVENUE_THRESHOLD = 100.0
+SAMPLE_DATA_SIZE = 10000

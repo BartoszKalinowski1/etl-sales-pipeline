@@ -25,10 +25,10 @@ def delete_duplicated_records(df):
 
 
 def delete_null_customer_records(df):
-    if df["customer"].isna().sum() > 0:
-        logger.info(f"Found {df['customer'].isna().sum()} records with null "
+    if df["customer_id"].isna().sum() > 0:
+        logger.info(f"Found {df['customer_id'].isna().sum()} records with null "
                     "customer. Deleting ...")
-    return df[~df["customer"].isna()]
+    return df[~df["customer_id"].isna()]
 
 
 def delete_negative_price_records(df):

@@ -24,7 +24,7 @@ def load_raw(df):
         with get_connection() as conn:
             with conn.cursor() as curr:
                 execute_values(curr, sql, rows)
-        logger.info(f"Loaded {len(rows)} columns into sales_raw")
+        logger.info(f"Loaded {len(rows)} rows into sales_raw")
     except Exception:
         logger.exception("Failed to load raw data")
         raise

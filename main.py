@@ -1,10 +1,10 @@
 from src.extract import extract_data
 from src.transform import transform_data
 from src.quality_checks import check_quality
-from src.load import load_data
+from src.load import load_raw, load_clean, load_segments
 import logging
 import os
-from config import DATA_PATH, PROCESSED_DIR, LOG_PATH
+from config import DATA_PATH, LOG_PATH
 from create_sample_data import generate_sample_data
 
 os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
@@ -24,12 +24,10 @@ logger.info("ETL pipeline started")
 logger.info("Generating sample data")
 generate_sample_data()
 
-data_path = DATA_PATH
-
 logger.info("Starting extraction step")
 
 try:
-    raw_df = extract_data(data_path)
+    raw_df = extract_data(DATA_PATH)
     logger.info(f"Raw data extracted. Shape: {raw_df.shape}")
 except Exception:
     logger.exception("Extraction failed")
@@ -46,14 +44,15 @@ except Exception:
     logger.exception("Transformation failed")
     raise
 
-processed_dir = PROCESSED_DIR
 
 logger.info("Running data quality checks")
 
 if check_quality(cleaned_df):
     logger.info("Starting load step")
     try:
-        load_data(cleaned_df, processed_dir)
+        load_raw(raw_df)
+        load_clean(cleaned_df)
+        load_segments()
         logger.info("Loading completed")
         logger.info(f"ETL pipeline finished successfully. "
                     f"Rows={len(cleaned_df)} | columns={cleaned_df.shape[1]} | "

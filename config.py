@@ -1,3 +1,5 @@
+import os
+
 DATA_PATH = "data/raw/sales.csv"
 LOG_PATH = "logs/pipeline.log"
 
@@ -7,7 +9,7 @@ SAMPLE_DATA_SIZE = 10000
 
 
 DB_CONFIG = {
-    "host": "localhost",
+    "host": os.getenv("DB_HOST", "localhost"),
     "port": 5432,
     "dbname": "sales_db",
     "user": "admin",

@@ -24,6 +24,8 @@ Built to demonstrate core Data Engineering skills: pipeline design, data quality
 Data loss of ~397 records caught and removed by the quality framework.
 
 ## Repository structure
+
+```
 etl-sales-pipeline/
 ├── src/
 │   ├── extract.py          # CSV ingestion
@@ -42,6 +44,7 @@ etl-sales-pipeline/
 ├── docker-compose.yml        # PostgreSQL service with auto schema init
 ├── create_sample_data.py     # Sample data generator
 └── requirements.txt
+```
 
 ## Tech stack
 

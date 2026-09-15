@@ -1,3 +1,8 @@
+## ☁️ AWS Migration
+
+See [AWS_MIGRATION.md](./infra/AWS_MIGRATION.md)
+
+
 # ETL Sales Pipeline
 
 Modular ETL pipeline that processes raw sales data, validates it through an automated quality framework, loads it into a PostgreSQL database, and is orchestrated end-to-end by Apache Airflow — all running in Docker.

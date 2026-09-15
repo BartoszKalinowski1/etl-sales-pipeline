@@ -1,6 +1,6 @@
 ## ☁️ AWS Migration
 
-See [AWS_MIGRATION.md](./infra/AWS_MIGRATION.md)
+See [AWS_MIGRATION.md](./infra/Aws migration.md)
 
 
 # ETL Sales Pipeline

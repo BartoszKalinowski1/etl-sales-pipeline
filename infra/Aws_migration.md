@@ -112,7 +112,15 @@ This provides a single view of the pipeline's runtime activity and resource usag
 
 ## Cost
 
-Built and torn down within a single free-tier credit budget (~$180 available, actual spend a small fraction of that — full breakdown pending final Cost Explorer numbers, since AWS billing data has up to a 24h processing delay).
+Built within a single free-tier credit budget (~$180 available). Actual spend, tracked from day one via AWS Budgets (50/80/100% email alerts) and confirmed in the Billing console:
+ 
+![Billing cost summary](screenshots/08-cost-summary.png)
+ 
+| Metric | Value |
+|---|---|
+| Month-to-date cost | **$4.43** |
+| Forecasted total for the month | **$12.77** |
+| Same period, previous month (baseline) | $0.01 |
 
 Main running costs while the environment was live were the two always-on compute resources — the RDS instance and the ECS EC2 instance (both `t3.micro`/`db.t3.micro`). Everything else (S3, ECR, IAM, EventBridge, SNS, SQS, CloudWatch Logs) is effectively free at this scale.
 

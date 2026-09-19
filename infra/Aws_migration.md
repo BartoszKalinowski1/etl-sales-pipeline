@@ -2,7 +2,7 @@
 
 This document describes the migration of a local Airflow/PostgreSQL/Docker Compose ETL pipeline to AWS, moving from a laptop-only setup to a cloud-native, event-driven, serverless-orchestrated pipeline — built primarily through the AWS Console.
 
-**Original project:** batch ETL pipeline (extract → transform → quality checks → load) processing sales data into a PostgreSQL warehouse, feeding a downstream [dbt-sales-analytics](../dbt-sales-analytics) project.
+**Original project:** batch ETL pipeline (extract → transform → quality checks → load) processing sales data into a PostgreSQL warehouse, feeding a downstream [dbt-sales-analytics](https://github.com/BartoszKalinowski1/dbt-sales-analytics) project.
 
 ## Why
 
@@ -14,22 +14,22 @@ This document describes the migration of a local Airflow/PostgreSQL/Docker Compo
 
 ```
                          ┌─────────────────────┐
-                         │   EventBridge         │
-                         │   Scheduler (cron)    │  daily trigger
-                         └──────────┬───────────┘
+                         │   EventBridge       │
+                         │   Scheduler (cron)  │  daily trigger
+                         └──────────┬──────────┘
                                     │ RunTask
                                     ▼
-┌──────────────┐        ┌─────────────────────┐        ┌──────────────────┐
-│  ECR          │──image─▶│  ECS Cluster (EC2)   │──────▶│  RDS PostgreSQL   │
-│  (container   │        │  t3.micro instance   │  SQL  │  db.t3.micro      │
-│   registry)   │        │  runs the ETL task    │       │  sales_db          │
+┌──────────────┐        ┌─────────────────────┐         ┌──────────────────┐
+│  ECR         │──image─▶│  ECS Cluster (EC2)  │──────▶│  RDS PostgreSQL  │
+│  (container  │        │  t3.micro instance   │  SQL   │  db.t3.micro     │
+│   registry)  │        │  runs the ETL task   │        │  sales_db        │
 └──────────────┘        └──────────┬───────────┘        └──────────────────┘
                                     │ reads raw data
                                     ▼
                          ┌─────────────────────┐
-                         │  S3 (data lake)       │
-                         │  raw / clean /        │
-                         │  segments prefixes    │
+                         │  S3 (data lake)     │
+                         │  raw / clean /      │
+                         │  segments prefixes  │
                          └─────────────────────┘
 
 Task state change (STOPPED) ──▶ EventBridge Rule ──▶ SNS (email alert)
